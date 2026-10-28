@@ -293,7 +293,8 @@ footer .lead{color:#d8d4ff}
     </div>
     <div class="fine">
       <span>© 2026 Mohamedia, Rotterdam</span>
-      <span class="js-kvk"></span>
+      <span>KvK 86761773</span>
+      <span>btw NL004767356B73</span>
     </div>
   </div>
 </footer>
@@ -304,13 +305,11 @@ footer .lead{color:#d8d4ff}
 // Contactgegevens: hier op één plek invullen.
 const CONTACT = {
   whatsapp: "31681339423",
-  email: "mohamedinalu@gmail.com",
-  kvk: ""              // bijv. "KvK 12345678"
+  email: "mohamedinalu@gmail.com"
 };
 const waText = encodeURIComponent("Hoi Mo! Ik ben benieuwd hoe mijn website eruit zou zien.");
 if (CONTACT.whatsapp) document.querySelectorAll(".js-wa").forEach(a => { a.href = `https://wa.me/${CONTACT.whatsapp}?text=${waText}`; a.target = "_blank"; a.rel = "noopener"; });
 if (CONTACT.email) document.querySelectorAll(".js-mail").forEach(a => a.href = `mailto:${CONTACT.email}`);
-if (CONTACT.kvk) document.querySelector(".js-kvk").textContent = CONTACT.kvk;
 
 // Probeer-het-zelf-kiezer: bouwt een ingevuld WhatsApp-bericht aan Mo
 const keuze = { zaak: "Nagels of lashes", site: "Nee, nog niet" };
@@ -333,11 +332,12 @@ document.querySelectorAll(".chips").forEach(groep => groep.addEventListener("cli
 }));
 toon();
 
-// Zwevende WhatsApp-knop op mobiel zodra de hero uit beeld is, maar niet over de kiezer heen
-const fl = document.getElementById("float"); let heroUit = false, kiezerIn = false;
-const upd = () => fl.classList.toggle("on", heroUit && !kiezerIn);
+// Zwevende WhatsApp-knop op mobiel zodra de hero uit beeld is, maar niet over de kiezer of de footer heen
+const fl = document.getElementById("float"); let heroUit = false, kiezerIn = false, footerIn = false;
+const upd = () => fl.classList.toggle("on", heroUit && !kiezerIn && !footerIn);
 new IntersectionObserver(([e]) => { heroUit = !e.isIntersecting; upd(); }).observe(document.querySelector(".hero"));
 new IntersectionObserver(([e]) => { kiezerIn = e.isIntersecting; upd(); }, { threshold: .1 }).observe(document.getElementById("kiezer"));
+new IntersectionObserver(([e]) => { footerIn = e.isIntersecting; upd(); }).observe(document.querySelector("footer .btns"));
 
 // De demo-link in de telefoon wisselt van soort zaak
 const slugs = ["jouw-zaak","jouw-nagelstudio","jouw-barbershop","jouw-bakkerij","jouw-catering"];
